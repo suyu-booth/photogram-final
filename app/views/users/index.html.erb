@@ -1,0 +1,77 @@
+<div>
+  <div>
+    <h1>
+      List of users
+    </h1>
+  </div>
+</div>
+
+
+<hr>
+
+
+<table border="1">
+  <tr>
+    <th>
+      Username
+    </th>
+
+    <th>
+      Private?
+    </th>
+
+    <th></th>
+    <th></th>
+  </tr>
+
+
+  <% @list_of_users.each do |a_user| %>
+    <tr>
+      <th>
+        <%= a_user.username%>
+      </th>
+
+      <th>
+        <% if a_user.private%>
+          Yes
+        <% else %>
+          No
+        <% end %>
+      </th>
+
+      <th>
+        <% if current_user != nil%>
+        <% follow_request_record = @followed_users_for_current_user.where({ :recipient_id => a_user.id})%>
+        <% if follow_request_record.count > 0 %>
+          <% follow_status = follow_request_record.at(0).status %>
+          <% if follow_status = "pending" %>
+            Request sent.
+
+            <a href="/delete_follow_request/<%=follow_request_record.at(0).id %>">
+              Cancel
+            </a>
+          <% elsif follow_status = "accepted"%>
+            <a href="/delete_follow_request/<%=follow_request_record.at(0).id %>">
+              Unfollow
+            </a>
+          <% elsif follow_status = "rejected"%>
+            
+          <% end %>
+        <% else %>
+          <form action="/insert_follow_request" method="post">
+              <input type="hidden" name="query_recipient_id" value= <%=a_user.id%>>
+              <button>
+                Follow
+              </button>
+            </form>
+        <% end %>
+        <% end %>
+      </th>
+      <th> 
+        <a href="/users/<%= a_user.username %>">
+            Show details
+          </a>
+      </th>
+    </tr>
+  <% end %>
+</table>
