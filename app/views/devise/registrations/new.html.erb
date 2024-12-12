@@ -26,6 +26,11 @@
     <%= f.text_field :username, autofocus: true, autocomplete: "username" %>
   </div>
 
+  <div class="field">
+    <%= f.label :user_private, "Private" %><br />
+    <%= f.check_box :private %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>

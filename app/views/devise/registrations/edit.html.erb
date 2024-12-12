@@ -13,6 +13,16 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :username %><br />
+    <%= f.text_field :username, autofocus: true, autocomplete: "username" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :user_private, "Private" %><br />
+    <%= f.check_box :private %>
+  </div>
+
+  <div class="field">
     <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
     <%= f.password_field :password, autocomplete: "new-password" %>
     <% if @minimum_password_length %>
@@ -31,10 +41,6 @@
     <%= f.password_field :current_password, autocomplete: "current-password" %>
   </div>
   
-  <div class="field">
-    <%= f.label :username %><br />
-    <%= f.text_field :username, autofocus: true, autocomplete: "username" %>
-  </div>
 
   <div class="actions">
     <%= f.submit "Update" %>
