@@ -11,6 +11,7 @@
 #
 class Comment < ApplicationRecord
   validates :owner_id, presence: true
+  validates :photo_id, presence: true
   
   belongs_to :owner, class_name: "User", counter_cache: true
   has_many  :comments, dependent: :destroy
