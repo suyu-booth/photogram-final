@@ -81,4 +81,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   root "users#index"
+
+  # Routes for the User resource:
+          
+  # READ
+  get("/users", { :controller => "users", :action => "index" })
 end
