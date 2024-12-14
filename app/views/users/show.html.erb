@@ -1,0 +1,111 @@
+<h1><%= @the_username %></h1>
+
+<dl>
+  <dt>Private</dt>
+  <dd><%= @the_user.private %></dd>
+
+  <dt>Followers</dt>
+  <dd>
+    <%= @followers.count() %>
+    <div>
+      <% if @self_following_the_user_tf %>
+        <a href="/delete_follow_request/<%=@the_follow_request.id.to_s %>">
+          Unfollow
+        </a>
+      <% else %>
+        <form action="/insert_follow_request" method="post">
+          <input type="hidden" name="query_recipient_id" value="<%= @the_user.id %>">
+
+          <button>
+            Follow
+          </button>
+        </form>
+      <% end %>
+    </div>
+  </dd>
+
+  <dt>Following</dt>
+  <dd><%= @following.count() %></dd>
+</dl>
+
+</div>
+</dl>
+
+<nav>
+  <ul>
+    <li>
+      <a href="/users/<%= @the_username %>">Profile</a>
+    </li>
+    <li>
+      <a href="/users/<%= @the_username %>/liked_photos">Liked photos</a>
+    </li>
+    <li>
+      <a href="/users/<%= @the_username %>/feed">Feed</a>
+    </li>
+    <li>
+      <a href="/users/<%= @the_username %>/discover">Discover</a>
+    </li>
+  </ul>
+</nav>
+
+<h1>Own photos (<%= @user_photos.count() %>)</h1>
+
+<div>
+  <table border="1">
+    <tr>
+
+      <th>
+        Image
+      </th>
+
+      <th>
+        Owner
+      </th>
+
+      <th>
+        Caption
+      </th>
+
+      <th>
+        Posted
+      </th>
+
+      <th>
+        Likes
+      </th>
+
+      <th>
+      </th>
+    </tr>
+
+    <% @user_photos.each do |a_photo| %>
+      <tr>
+        <th>
+          <img src="<%= a_photo.image %>">
+        </th>
+
+        <th>
+          <%= @the_username %>
+        </th>
+
+        <th>
+          <%= a_photo.caption %>
+        </th>
+
+        <th>
+          <%= time_ago_in_words(a_photo.created_at) %>
+        </th>
+
+        <th>
+          <%= a_photo.likes_count %>
+        </th>
+
+        <th>
+          <a href="/photos/<%= a_photo.id %>">
+            Show details
+          </a>
+        </th>
+      </tr>
+    <%end%>
+  </table>
+</div>

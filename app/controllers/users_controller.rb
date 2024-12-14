@@ -15,19 +15,29 @@ class UsersController < ApplicationController
     @the_user = User.where({ :username => @the_username }).at(0)
 
     @user_photos = @the_user.photos.order({ :likes_count => :desc })
+
+    @followers = @the_user.followers
+    @followers_all_status = @the_user.followers_all_status
+    @followers_pending = @the_user.followers_pending
+
+    @following = @the_user.leaders
+    @following_all_status = @the_user.leaders_all_status
+    @following_pending = @the_user.leaders_pending
     
     if @the_username == current_user.username
-      @followers = @the_user.followers
-      @followers_all_status = @the_user.followers_all_status
-      @followers_pending = @the_user.followers_pending
 
-      @following = @the_user.leaders
-      @following_all_status = @the_user.leaders_all_status
-      @following_pending = @the_user.leaders_pending
 
       render({ :template => "users/self" })
     else 
-      render({ :template => "users/show" })
+      self_following = current_user.leaders
+      @self_following_the_user_tf = self_following.where(username: @the_username).exists?
+      if @self_following_the_user_tf || !@the_user.private
+        @the_follow_request = current_user.sent_follow_requests.where( :recipient_id => @the_user.id ).at(0)
+        render({ :template => "users/show" })
+      else 
+        redirect_to("/", { :notice => "You're not authorized for that."} )
+      end 
+      
     end 
   end
 end
