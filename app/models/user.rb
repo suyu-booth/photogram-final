@@ -45,6 +45,10 @@ class User < ApplicationRecord
   has_many :followers_pending, through: :pending_received_follow_requests, source: :sender
   has_many :commented_photos, through: :comments, source: :photo
   has_many :liked_photos, through: :likes, source: :photo
+  has_many :feed_photos, through: :leaders, source: :photos
+  has_many :discovery_photos, through: :leaders, source: :liked_photos
+
+
 
   def self.formatted_list
     names = pluck(:username) # Plucks all product names

@@ -84,4 +84,7 @@ Rails.application.routes.draw do
   # READ
   get("/users", { :controller => "users", :action => "index" })
   get("/users/:selected_username", { :controller => "users", :action => "show" })
+  get("/users/:selected_username/liked_photos", { :controller => "users", :action => "liked_photos" })
+  get("/users/:selected_username/feed", { :controller => "users", :action => "feed" })
+  get("/users/:selected_username/discover", { :controller => "users", :action => "discover" })
 end

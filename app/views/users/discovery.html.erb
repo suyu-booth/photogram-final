@@ -1,0 +1,64 @@
+<%= render 'users/header' %>
+
+<h1>Feed (<%= @discovery_photos.count() %>)</h1>
+
+
+<div>
+  <table border="1">
+    <tr>
+
+      <th>
+        Image
+      </th>
+
+      <th>
+        Owner
+      </th>
+
+      <th>
+        Caption
+      </th>
+
+      <th>
+        Posted
+      </th>
+
+      <th>
+        Likes
+      </th>
+
+      <th>
+      </th>
+    </tr>
+
+    <% @discovery_photos.each do |a_photo| %>
+      <tr>
+        <th>
+          <img src="<%= a_photo.image %>">
+        </th>
+
+        <th>
+          <%= a_photo.owner.username %>
+        </th>
+
+        <th>
+          <%= a_photo.caption %>
+        </th>
+
+        <th>
+          <%= time_ago_in_words(a_photo.created_at) %>
+        </th>
+
+        <th>
+          <%= a_photo.likes_count %>
+        </th>
+
+        <th>
+          <a href="/photos/<%= a_photo.id %>">
+            Show details
+          </a>
+        </th>
+      </tr>
+    <%end%>
+  </table>
+</div>
