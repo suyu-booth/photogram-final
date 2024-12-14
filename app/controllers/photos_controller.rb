@@ -9,10 +9,13 @@ class PhotosController < ApplicationController
 
   def show
     the_id = params.fetch("path_id")
-
+    
     matching_photos = Photo.where({ :id => the_id })
 
     @the_photo = matching_photos.at(0)
+    @the_owner = @the_photo.owner
+    @list_of_fans = @the_photo.fans
+    @list_of_comments = @the_photo.comments.order({ :created_at => :asc })
 
     render({ :template => "photos/show" })
   end
@@ -54,9 +57,7 @@ class PhotosController < ApplicationController
   def destroy
     the_id = params.fetch("path_id")
     the_photo = Photo.where({ :id => the_id }).at(0)
-
     the_photo.destroy
-
     redirect_to("/photos", { :notice => "Photo deleted successfully."} )
   end
 end

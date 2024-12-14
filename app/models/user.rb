@@ -34,9 +34,29 @@ class User < ApplicationRecord
   has_many  :received_follow_requests, class_name: "FollowRequest", foreign_key: "recipient_id", dependent: :destroy
   has_many  :accepted_sent_follow_requests, -> { where status: "accepted" },class_name: "FollowRequest", foreign_key: "sender_id", dependent: :destroy
   has_many  :accepted_received_follow_requests, -> { where status: "accepted" }, class_name: "FollowRequest", foreign_key: "recipient_id", dependent: :destroy
+  has_many  :pending_sent_follow_requests, -> { where status: "pending" },class_name: "FollowRequest", foreign_key: "sender_id", dependent: :destroy
+  has_many  :pending_received_follow_requests, -> { where status: "pending" }, class_name: "FollowRequest", foreign_key: "recipient_id", dependent: :destroy
 
   has_many :leaders, through: :accepted_sent_follow_requests, source: :recipient
   has_many :followers, through: :accepted_received_follow_requests, source: :sender
+  has_many :leaders_all_status, through: :sent_follow_requests, source: :recipient
+  has_many :followers_all_status, through: :received_follow_requests, source: :sender
+  has_many :leaders_pending, through: :pending_sent_follow_requests, source: :recipient
+  has_many :followers_pending, through: :pending_received_follow_requests, source: :sender
   has_many :commented_photos, through: :comments, source: :photo
   has_many :liked_photos, through: :likes, source: :photo
+
+  def self.formatted_list
+    names = pluck(:username) # Plucks all product names
+    case names.length
+    when 0
+      ""
+    when 1
+      names.first
+    when 2
+      names.join(" and ")
+    else
+      "#{names[0..-2].join(', ')}, and #{names.last}"
+    end
+  end
 end
